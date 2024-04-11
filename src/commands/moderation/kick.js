@@ -34,6 +34,7 @@ module.exports = {
 
         if(targetUserRolePosition >= botRolePosition) {
             await interaction.editReply("I can't kick that user because they have the same or higher role than me.");
+            return;
         }
 
         ///Kick
@@ -43,7 +44,6 @@ module.exports = {
         } catch (error) {
             console.log(`There was an error with kicking. Error: ${error}`);
         }
-
     },
 
     name: 'kick',
