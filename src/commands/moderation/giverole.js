@@ -11,6 +11,7 @@ module.exports = {
     callback: async (client, interaction) => { 
         const targetUserId = interaction.options.get('target-user').value;
         const targetRoleId = interaction.options.get('role').value;
+        const reason = interaction.options.get('reason')?.value || "No reason provided.";
 
         await interaction.deferReply();
 
@@ -43,9 +44,13 @@ module.exports = {
         try {
             //var role = targetUser.roles.cache.find(role => role.name === targetRole);
             //if (isNaN(role)){ await interaction.editReply("That role seems to not exist on this server.")};
-            
+            if(targetUser.roles.cache.has(targetRoleId)){
+                await interaction.editReply(`${targetUser} already has a ${targetRole} role.`);
+                return;
+            }
+
             await targetUser.roles.add(targetRole);
-            await interaction.editReply(`${targetUser} was given a ${targetRole} role.`);
+            await interaction.editReply(`${targetUser} was given a ${targetRole} role.\n Reason: ${reason}`);
         } catch (error) {
             await interaction.editReply("There was an error. Check the console.");
             console.log(`There was an error with kicking. Error: ${error}`);
@@ -64,6 +69,11 @@ module.exports = {
             description: 'The role you want to give to the user.',
             type: ApplicationCommandOptionType.Role,
             required: true,
+        },
+        {
+            name: 'reason',
+            description: 'Reason for giving the selected role.',
+            type: ApplicationCommandOptionType.String,
         }
     ]
 }
