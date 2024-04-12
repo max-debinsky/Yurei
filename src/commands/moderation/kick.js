@@ -42,6 +42,7 @@ module.exports = {
             await targetUser.kick(reason);
             await interaction.editReply(`${targetUser} was kicked.\n Reason: ${reason}`);
         } catch (error) {
+            await interaction.editReply("There was an error. Check the console.");
             console.log(`There was an error with kicking. Error: ${error}`);
         }
     },
